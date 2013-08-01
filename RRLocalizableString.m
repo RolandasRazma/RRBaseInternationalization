@@ -66,7 +66,7 @@ static NSString *_rr_currentNibName;
             _rr_currentNibDirectory = _rr_currentNibName = nil;
         }else if( [extension isEqual:@"nib"] ){
             if( (path = [self pathForResource:name ofType:extension inDirectory:@"Base.lproj"]) ){
-                if( [name rangeOfString:@".storyboardc"].location == NSNotFound ){
+                if( [path rangeOfString:@".storyboardc"].location == NSNotFound ){
                     _rr_currentNibPath = path;
                     _rr_currentNibDirectory = _rr_currentNibName = nil;
                 }
