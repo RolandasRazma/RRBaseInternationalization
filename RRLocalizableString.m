@@ -36,11 +36,13 @@
 
 + (void)load {
     
-    // Check if iOS doesn't have support for it
-    if( [[[UIDevice currentDevice] systemVersion] compare:@"6.0" options:NSNumericSearch] == NSOrderedAscending ){
-        Class class = [NSBundle class];
-        method_exchangeImplementations(class_getInstanceMethod(class, @selector(pathForResource:ofType:)),
-                                       class_getInstanceMethod(class, @selector(_r_pathForResource:ofType:)));
+    @autoreleasepool {
+        // Check if iOS doesn't have support for it
+        if( [[[UIDevice currentDevice] systemVersion] compare:@"6.0" options:NSNumericSearch] == NSOrderedAscending ){
+            Class class = [NSBundle class];
+            method_exchangeImplementations(class_getInstanceMethod(class, @selector(pathForResource:ofType:)),
+                                           class_getInstanceMethod(class, @selector(_r_pathForResource:ofType:)));
+        }
     }
     
 }
@@ -109,10 +111,12 @@ static NSString *_rr_currentNibName;
 
 + (void)load {
     
-    // Check if iOS doesn't have support for it
-    // keep in mind that I'm NOT using any private classes here as NSLocalizableString doesn't exist in iOS5
-    if( [[[UIDevice currentDevice] systemVersion] compare:@"6.0" options:NSNumericSearch] == NSOrderedAscending ){
-        [NSKeyedUnarchiver setClass:NSClassFromString(@"RRLocalizableString") forClassName:@"NSLocalizableString"];
+    @autoreleasepool {
+        // Check if iOS doesn't have support for it
+        // keep in mind that I'm NOT using any private classes here as NSLocalizableString doesn't exist in iOS5
+        if( [[[UIDevice currentDevice] systemVersion] compare:@"6.0" options:NSNumericSearch] == NSOrderedAscending ){
+            [NSKeyedUnarchiver setClass:[RRLocalizableString class] forClassName:@"NSLocalizableString"];
+        }
     }
     
 }
