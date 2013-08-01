@@ -57,24 +57,30 @@ static NSString *_rr_currentNibName;
 - (NSString *)_r_pathForResource:(NSString *)name ofType:(NSString *)extension {
     NSString *path = [self _r_pathForResource:name ofType:extension];
     
-    if( !path && [extension isEqual:@"storyboardc"] ){
-        path = [self pathForResource:name ofType:extension inDirectory:@"Base.lproj"];
-        
-        _rr_currentNibPath = path;
-        _rr_currentNibDirectory = _rr_currentNibName = nil;
-    }else if( !path && [extension isEqual:@"nib"] ){
-        if( (path = [self pathForResource:name ofType:extension inDirectory:@"Base.lproj"]) ){
+    if( !path ){
+    
+        if( [extension isEqual:@"storyboardc"] ){
+            path = [self pathForResource:name ofType:extension inDirectory:@"Base.lproj"];
+            
             _rr_currentNibPath = path;
             _rr_currentNibDirectory = _rr_currentNibName = nil;
-        }else{
-            if( !_rr_currentNibDirectory ){
-                _rr_currentNibDirectory = [_rr_currentNibPath stringByReplacingOccurrencesOfString:[self bundlePath] withString:@""];
+        }else if( [extension isEqual:@"nib"] ){
+            if( (path = [self pathForResource:name ofType:extension inDirectory:@"Base.lproj"]) ){
+                if( [name rangeOfString:@".storyboardc"].location == NSNotFound ){
+                    _rr_currentNibPath = path;
+                    _rr_currentNibDirectory = _rr_currentNibName = nil;
+                }
+            }else{
+                if( !_rr_currentNibDirectory ){
+                    _rr_currentNibDirectory = [_rr_currentNibPath stringByReplacingOccurrencesOfString:[self bundlePath] withString:@""];
+                }
+                
+                path = [self pathForResource:name ofType:extension inDirectory: _rr_currentNibDirectory];
             }
-            
-            path = [self pathForResource:name ofType:extension inDirectory: _rr_currentNibDirectory];
         }
-    }
     
+    }
+
     return path;
 }
 
