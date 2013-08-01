@@ -26,19 +26,28 @@
 #import <objc/runtime.h>
 
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 @implementation NSBundle (RRLocalizableString)
+
+
+#pragma mark -
+#pragma mark NSObject
 
 
 + (void)load {
     
-    // here I'm checking for NSLayoutConstraint as simple iOS6 check
-    if( !NSClassFromString(@"NSLayoutConstraint") ){
+    // Check if iOS doesn't have support for it
+    if( [[[UIDevice currentDevice] systemVersion] compare:@"6.0" options:NSNumericSearch] == NSOrderedAscending ){
         Class class = [NSBundle class];
         method_exchangeImplementations(class_getInstanceMethod(class, @selector(pathForResource:ofType:)),
                                        class_getInstanceMethod(class, @selector(_r_pathForResource:ofType:)));
     }
     
 }
+
+
+#pragma mark -
+#pragma mark NSBundle (RRLocalizableString)
 
 
 static NSString *_rr_currentNibPath;
@@ -100,9 +109,9 @@ static NSString *_rr_currentNibName;
 
 + (void)load {
     
-    // here I'm checking for NSLayoutConstraint because NSLocalizableString is private in iOS6
+    // Check if iOS doesn't have support for it
     // keep in mind that I'm NOT using any private classes here as NSLocalizableString doesn't exist in iOS5
-    if( !NSClassFromString(@"NSLayoutConstraint") ){
+    if( [[[UIDevice currentDevice] systemVersion] compare:@"6.0" options:NSNumericSearch] == NSOrderedAscending ){
         [NSKeyedUnarchiver setClass:NSClassFromString(@"RRLocalizableString") forClassName:@"NSLocalizableString"];
     }
     
@@ -110,7 +119,7 @@ static NSString *_rr_currentNibName;
 
 
 #pragma mark -
-#pragma mark RRStoryboardEmbedSegue
+#pragma mark NSCoding
 
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -122,11 +131,19 @@ static NSString *_rr_currentNibName;
 }
 
 
+#pragma mark -
+#pragma mark NSObject
+
+
 - (id)awakeAfterUsingCoder:(NSCoder *)aDecoder {
     return [[NSBundle mainBundle] localizedStringForKey: _stringsFileKey
                                                   value: _developmentLanguageString
                                                   table: [NSBundle _rr_currentNibName]];
 }
+
+
+#pragma mark -
+#pragma mark NSString
 
 
 - (NSUInteger)length {
@@ -140,3 +157,4 @@ static NSString *_rr_currentNibName;
 
 
 @end
+#endif

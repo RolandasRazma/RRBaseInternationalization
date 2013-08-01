@@ -25,9 +25,11 @@
 #import <Foundation/Foundation.h>
 
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
 @interface RRLocalizableString : NSString
 
 - (NSUInteger)length;
 - (unichar)characterAtIndex:(NSUInteger)index;
 
 @end
+#endif
