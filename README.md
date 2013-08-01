@@ -14,6 +14,7 @@ It will have no effect on your app. On iOS versions where "Base Internationaliza
 How to use it in my project?
 ============
 Just drop `RRLocalizableString.h` and `RRLocalizableString.m` into your project and forget about them :)<br />
+Set **Deployment tartget** to **iOS6** for **Interface Builder file** (xib or storyboard)<br />
 Use **Xcode 4x** to build
 
 This is wicked, do you have more?
