@@ -5,7 +5,7 @@ RRBaseInternationalization
 
 Disclaimer
 ============
-Use at your own risk. This should be App Store valid but I will update about that after iPad version of [@YPlan](http://yplanapp.com) will be aprooved/rejected :)
+Use at your own risk. This is App Store valid. iPad version of [@YPlan](http://yplanapp.com) uses it for **iOS5** support :)
 
 Will it slow down my iOS6+ app?
 ============
